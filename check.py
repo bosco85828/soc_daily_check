@@ -21,14 +21,14 @@ class CustomAdapter ( requests.adapters.HTTPAdapter ):
 
 def get_wafcname():
     ewaf=os.popen("""
-    curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn3r-rHE-KAVbzVXRMnMXye3QFYc5ntXD0jHiabdYiBrK0p33JNV52QfmYgu8ybxd8fGheQOlTCbE1/pub?gid=1567746631&single=true&output=csv" -Ls | egrep 'prod|globalaccelerator|poc' |egrep -vi 'alhk|hermes'| tr -d '\"' | sort -V | uniq 
+    curl "google doc" -Ls | egrep 'prod|globalaccelerator|poc' |egrep -vi 'alhk|hermes'| tr -d '\"' | sort -V | uniq 
     """)
 
     ewaf_list=[x.strip()+".chinaslb.com" for x in ewaf.readlines()]
 
 
     iwaf=os.popen("""
-    curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn3r-rHE-KAVbzVXRMnMXye3QFYc5ntXD0jHiabdYiBrK0p33JNV52QfmYgu8ybxd8fGheQOlTCbE1/pub?gid=614077665&single=true&output=csv" -Ls | awk -F ',' '$2~"使用"{print $1}'
+    curl "google doc" -Ls | awk -F ',' '$2~"使用"{print $1}'
     """)
 
     iwaf_list=[x.strip() for x in iwaf.readlines()]
@@ -65,22 +65,16 @@ def test_waf(ip):
 
 
 def get_pdnsip():
-    url="https://docs.google.com/spreadsheets/d/e/2PACX-1vRH4iV54IGHsVRha8A2O2MDSweVbkA4MC2HPpckrxBIu8dfWSlIs52v-4M4VPvXB0q82-Cu-1jeLsMK/pub?gid=1533413977&single=true&output=csv"
+    url="google doc"
     data=requests.get(url)
     result_=re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}.\d{1,3}',data.text)
     eip_list=list(set([x for x in result_]))
     
-    # # f=os.popen("""
-    # # curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH4iV54IGHsVRha8A2O2MDSweVbkA4MC2HPpckrxBIu8dfWSlIs52v-4M4VPvXB0q82-Cu-1jeLsMK/pub?gid=1533413977&single=true&output=csv" -Ls | awk -F ',' '$1!~"關機" && $1!~"刪除" && $NF!~"IP"{print $NF}'|awk -F ' ' '$1!="\r"{print}'|tr -d "\r"
-    # # """)
-    # f=os.popen(f"bash {os.getcwd()}/getPDNS.sh")
-    # a=f.readlines()
-    # pdns_list=[i.strip() for i in a]
     return eip_list
 
 def get_mdnsip():
     mdnsip=os.popen("""
-    curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vQn3r-rHE-KAVbzVXRMnMXye3QFYc5ntXD0jHiabdYiBrK0p33JNV52QfmYgu8ybxd8fGheQOlTCbE1/pub?gid=396947093&single=true&output=csv" -Ls | awk -F ',' '$1!~"關機" && $1!~"刪除" && $2!~"stage" && $1!="組別" && $1!="" {print $3}' | tr -d '\r'
+    curl "google doc" -Ls | awk -F ',' '$1!~"關機" && $1!~"刪除" && $2!~"stage" && $1!="組別" && $1!="" {print $3}' | tr -d '\r'
     """)
 
     mdnsip_list=[x.strip() for x in mdnsip.readlines()]
@@ -115,7 +109,7 @@ def test_mdns(ip):
 
 
 def slacksendmsg(msg):
-    credentials= "xoxb-201064517493-1900976258641-ZjGfstyjTHS9rlAOth4htBlA"
+    credentials= ""
     oauth_token = credentials
     client=WebClient(token=oauth_token)
     channel_id = 'CRQ9969AL'

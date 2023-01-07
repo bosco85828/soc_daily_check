@@ -32,7 +32,7 @@ def get_wafcname():
     """)
 
     iwaf_list=[x.strip() for x in iwaf.readlines()]
-    iwaf_list2=["ansarada.iwaf.jqww33.com","hkddos.iwaf.jqww33.com","hko-iwaf-prod.jqww33.com","noonootv.iwaf.jqww33.com","edgeextension.njhm0832.com","cn2poseidon.common-prod.njhm0832.com"]
+    iwaf_list2=[]
     iwaf_list+=iwaf_list2
 
     return ewaf_list + iwaf_list

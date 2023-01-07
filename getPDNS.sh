@@ -1,0 +1,1 @@
+curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH4iV54IGHsVRha8A2O2MDSweVbkA4MC2HPpckrxBIu8dfWSlIs52v-4M4VPvXB0q82-Cu-1jeLsMK/pub?gid=1533413977&single=true&output=csv" -Ls | awk -F ',' '$1!~"關機" && $1!~"刪除" && $NF!~"IP"{print $NF}'|awk -F ' ' '$1!="\r"{print}'|tr -d "\r"
